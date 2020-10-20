@@ -8,6 +8,7 @@
 # Import libraries
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+from itertools import chain
 import numpy as np
 import pandas as pd
 
@@ -41,23 +42,17 @@ def scrape_data(season = 2020, stat_type = 'per_game'):
     
     if stat_type == 'shooting':
         # Get all column "over-headers" (e.g., Dunks, Corner 3s, Heaves) and "under-headers" (2P, 0-3, 3-10, etc.) from the table
-        upper_headers = [th.getText() for th in soup.findAll('tr', limit = 1)[0].find_all('th')]
-        lower_headers = [th.getText() for th in soup.findAll('tr', limit = 2)[1].find_all('th')]
+        col_headers = [th.getText() for th in soup.findAll('tr', limit = 2)[1].find_all('th')]
         # Remove the 'Rank/Rk' headers
-        upper_headers = upper_headers[1:]
-        lower_headers = lower_headers[1:]
-        # Drop all of the empty strings from list of over-headers so we're left with just the actual over_header names
-        upper_headers = list(filter(lambda x: (x != '' and x != '\xa0'), upper_headers))    # \xa0 is non-breaking space
-        # Create multi-column index for the data so all column indices are unique (better way to do this?)
-        multiindex_tuples = []
-        multiindex_tuples.extend([('', header) for header in lower_headers[0:8]])
-        multiindex_tuples.extend([(upper_headers[0], header) for header in lower_headers[9:15]])
-        multiindex_tuples.extend([(upper_headers[1], header) for header in lower_headers[16:22]])
-        multiindex_tuples.extend([(upper_headers[2], header) for header in lower_headers[23:25]])
-        multiindex_tuples.extend([(upper_headers[3], header) for header in lower_headers[26:28]])
-        multiindex_tuples.extend([(upper_headers[4], header) for header in lower_headers[29:31]])
-        multiindex_tuples.extend([(upper_headers[5], header) for header in lower_headers[32:34]])
-        col_headers = pd.MultiIndex.from_tuples(multiindex_tuples)
+        col_headers = col_headers[1:]
+        # Add suffixes to column header names
+        col_headers = list(chain([header for header in col_headers[0:8]], 
+                          [(header + ' Proportion') for header in col_headers[9:15]],
+                          [(header + ' FG%') for header in col_headers[16:22]],
+                          [(header + ' Proportion Astd') for header in col_headers[23:25]],
+                          [(header + ' Dunks') for header in col_headers[26:28]],
+                          [(header + ' Corner 3s') for header in col_headers[29:31]],
+                          [(header + ' Heaves') for header in col_headers[32:34]]))
         
         # Exclude the first two rows, the headers rows
         rows = soup.findAll('tr')[2:]
@@ -96,13 +91,13 @@ def scrape_data(season = 2020, stat_type = 'per_game'):
 
 # Call scraping function
 season = 2020
-stat_type = 'shooting'
+stat_type = 'per_game'
 data = scrape_data(season, stat_type) 
 
 
 # Output file
-file_name = './Data/nba_{}_{}.csv'.format(season, stat_type)
-data.to_csv(file_name, sep = ',')
+file_name = '../Data/nba_{}_{}.csv'.format(season, stat_type)
+data.to_csv(file_name, sep = ',', index = False)
 
 
     
