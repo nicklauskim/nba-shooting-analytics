@@ -1,4 +1,4 @@
-# NBA-Shooting-Project
+# NBA Shooting Analytics
 Sports analytics project using advanced shooting metrics to find insights in the shooting tendencies and patterns of different NBA players in the 2019-20 regular season.
 
 This project takes an in-depth look at shooting statistics of players in the NBA. The league has increasingly revolved around the 3-point shot in recent years and the 2020 season was no different. I attempt to dissect just how widespread the 3-pointer was in 2020, and how this rapid growth of the long-ball, along with other  trends on offense, point towards the steady evolution towards "positionless basketball". We will specifically look at differences in shooting percentages and splits across positions, and hopefully come to the conclusion that the distinction of different positions in the NBA is beginning to lose relevance. That is, the traditional positions (PG, SG, etc.) no longer serve to capture differences in playing style, shot selection court positioning as I think they should. O create a variety of aesthetic plots to illustrate this point, along with other relevant statistical trends and anomalies from the season.
