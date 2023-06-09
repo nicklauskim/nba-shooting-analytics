@@ -6,5 +6,3 @@ This project begins with some basic implementations of common techniques in Nump
 
 Then, in an effort to group players based on these differences, I apply the k-Means clustering algorithm and create a new position system for all of the players. Players with the same position that I assign to them will exhibit the same or similar shooting statistics and other offensive metrics. In addition, I use a k Nearest Neighbors clustering to find, for any given player, other players with the most similar style of play according to designated stat categories. This clustering can potentially serve to point towards hypothetical replacements for players who perhaps depart from a team (a very real and relevant issue in the age of player movement and freedom). Alternatively, one could look at the outputted similar players as a basis for the input player's adaptation/improvement of his game.
 
-
-Some more text...
